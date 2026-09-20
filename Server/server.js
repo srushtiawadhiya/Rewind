@@ -15,7 +15,7 @@ console.log("Uploads folder:", path.resolve("uploads"));
 
 const app = express();
 
-await connectDB();
+connectDB();
 
 app.use(
   cors({
