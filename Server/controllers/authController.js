@@ -11,6 +11,15 @@ import User from "../models/user.js";
 import Memory from "../models/Memory.js";
 import Year from "../models/Year.js";
 
+const isProduction = process.env.NODE_ENV === "production";
+
+const cookieOptions = {
+  httpOnly: true,
+  secure: isProduction,                 // true on Vercel, false on localhost
+  sameSite: isProduction ? "none" : "lax",
+  maxAge: 7 * 24 * 60 * 60 * 1000,      // 7 days
+};
+
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -196,12 +205,7 @@ const token = jwt.sign(
   { expiresIn: "7d" }
 );
 
-res.cookie("token", token, {
-  httpOnly: true,
-  secure: false,
-  sameSite: "lax",
-  maxAge: 7 * 24 * 60 * 60 * 1000,
-});
+res.cookie("token", token, cookieOptions);
 
 return res.status(201).json({
   success: true,
@@ -279,13 +283,13 @@ export const loginUser = async (req, res) => {
     );
 
     // 5. Store JWT in HTTP-only cookie
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: false,
-      sameSite: "lax",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
-
+    // res.cookie("token", token, {
+    //   httpOnly: true,
+    //   secure: false,
+    //   sameSite: "lax",
+    //   maxAge: 7 * 24 * 60 * 60 * 1000,
+    // });
+res.cookie("token", token, cookieOptions);
     // 6. Send success response
     return res.status(200).json({
       success: true,
@@ -344,11 +348,7 @@ export const getCurrentUser = async (req, res) => {
 
 export const logoutUser = async (req, res) => {
   try {
-    res.clearCookie("token", {
-      httpOnly: true,
-      secure: false,
-      sameSite: "lax",
-    });
+    res.clearCookie("token", cookieOptions);
 
     return res.status(200).json({
       success: true,
@@ -440,11 +440,7 @@ await Year.deleteMany({
       _id: userId,
     });
 
-    res.clearCookie("token", {
-      httpOnly: true,
-      secure: false,
-      sameSite: "lax",
-    });
+    res.clearCookie("token", cookieOptions);
 
     return res.status(200).json({
       success: true,
@@ -789,12 +785,7 @@ export const verifyLoginOtp = async (req, res) => {
       { expiresIn: "7d" }
     );
 
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: false,
-      sameSite: "lax",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+   res.cookie("token", token, cookieOptions);
 
     await Otp.deleteOne({ _id: otpRecord._id });
 
