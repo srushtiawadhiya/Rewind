@@ -19,10 +19,8 @@ connectDB();
 
 app.use(
   cors({
-    origin: "https://rewindclient.vercel.app",
+    origin: process.env.CLIENT_URL,
     credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
