@@ -32,7 +32,7 @@ const AddYear = () => {
       setLoading(true);
 
       const response = await fetch(
-        "${import.meta.env.VITE_API_URL}/api/years",
+        `${import.meta.env.VITE_API_URL}/api/years`,
         {
           method: "POST",
           headers: {
