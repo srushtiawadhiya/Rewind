@@ -26,7 +26,7 @@ const handleDeleteAccount = async () => {
     setLoading(true);
 
     const response = await fetch(
-      `http://${import.meta.env.VITE_API_URL}/api/auth/delete-account`,
+      `${import.meta.env.VITE_API_URL}/api/auth/delete-account`,
       {
         method: "DELETE",
         credentials: "include",
