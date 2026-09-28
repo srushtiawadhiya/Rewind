@@ -55,7 +55,7 @@ const EditMemory = () => {
       : memoryDate;
 
     const response = await fetch(
-      `${import.meta.env.VITE_API_URL}http:///api/memories/${memory._id}`,
+      `${import.meta.env.VITE_API_URL}/api/memories/${memory._id}`,
       {
         method: "PUT",
         credentials: "include",
